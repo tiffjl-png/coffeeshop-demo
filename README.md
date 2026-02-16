@@ -1,52 +1,71 @@
 # EarlyBirds Coffee Shop Demo
 
-A simple three-tier web application with a FastAPI backend, React frontend, and Firestore database.
+A full-stack coffee shop application with a FastAPI backend, React (TypeScript) frontend, and Google Cloud Firestore database.
 
-## Prerequisites
-- Python 3.11+
-- Node.js 18+
-- Google Cloud Project with Firestore enabled.
-- Google Cloud SDK installed.
+## Architecture
+- **Frontend**: React (TS) served by Nginx on Cloud Run.
+- **Backend**: FastAPI on Cloud Run.
+- **Database**: Google Cloud Firestore (Database: `coffeeshop-demo`).
+- **CI/CD**: Google Cloud Build.
 
-## Local Setup
+## 🚀 Cloud Deployment (Manual)
 
-### 1. Backend
+### 1. Backend Deployment
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-# Set GCP credentials if using Firestore
-# export GOOGLE_APPLICATION_CREDENTIALS="path/to/your/service-account-file.json"
-uvicorn main:app --reload
+# Build and Push
+gcloud builds submit --tag gcr.io/swift-arcadia-486017-q4/earlybirds-backend
+# Deploy
+gcloud run deploy earlybirds-backend \
+  --image gcr.io/swift-arcadia-486017-q4/earlybirds-backend \
+  --platform managed \
+  --region us-central1 \
+  --set-env-vars USE_FIRESTORE=true \
+  --project swift-arcadia-486017-q4
 ```
 
-### 2. Frontend
+### 2. Frontend Deployment
+**Note**: Ensure `App.tsx` has the correct `API_BASE` URL before building.
 ```bash
 cd frontend
-npm install
-npm start
+# Build and Push
+gcloud builds submit --tag gcr.io/swift-arcadia-486017-q4/earlybirds-frontend
+# Deploy
+gcloud run deploy earlybirds-frontend \
+  --image gcr.io/swift-arcadia-486017-q4/earlybirds-frontend \
+  --platform managed \
+  --region us-central1 \
+  --project swift-arcadia-486017-q4
 ```
 
-## Deployment to Cloud Run
+## 🔒 Private Access (Secure Tunneling)
+If services are not public (`allUsers`), use the following proxies to access the app locally:
 
-### Build and Push Images
+**Terminal 1 (Backend Proxy):**
 ```bash
-# Set your project ID
-PROJECT_ID=$(gcloud config get-value project)
-
-# Backend
-gcloud builds submit --tag gcr.io/$PROJECT_ID/earlybirds-backend backend
-gcloud run deploy earlybirds-backend --image gcr.io/$PROJECT_ID/earlybirds-backend --platform managed --allow-unauthenticated
-
-# Frontend
-# Note: Update API_BASE in App.tsx to your backend URL before building
-gcloud builds submit --tag gcr.io/$PROJECT_ID/earlybirds-frontend frontend
-gcloud run deploy earlybirds-frontend --image gcr.io/$PROJECT_ID/earlybirds-frontend --platform managed --allow-unauthenticated
+gcloud run services proxy earlybirds-backend --port=8001 --region=us-central1
 ```
 
-## Features
-- **Authentication**: Simple email/passcode login.
-- **User Profiles**: Profile creation on first login.
-- **Menu**: Starbucks-inspired coffee options.
-- **Order History**: Saved in Firestore for future recommendations.
+**Terminal 2 (Frontend Proxy):**
+```bash
+gcloud run services proxy earlybirds-frontend --port=4001 --region=us-central1
+```
+Access the app at: **http://localhost:4001**
+
+## 🛠 CI/CD Pipeline
+The project includes a `cloudbuild.yaml` file for automated deployments.
+
+To trigger manually:
+```bash
+gcloud builds submit --config cloudbuild.yaml \
+  --substitutions=_BACKEND_URL="https://earlybirds-backend-418660309017.us-central1.run.app"
+```
+
+## 🗄 Firestore Configuration
+- **Database Name**: `coffeeshop-demo`
+- **Location**: `us-central1`
+- **Required IAM Roles**: The Cloud Run service account must have `roles/datastore.user`.
+
+## 💻 Local Development
+1. **Backend**: `cd backend && pip install -r requirements.txt && python main.py`
+2. **Frontend**: `cd frontend && npm install && npm start`
