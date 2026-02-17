@@ -61,11 +61,11 @@ class OrderCreate(BaseModel):
 
 # --- Mock Data ---
 MENU = [
-    {"id": "latte", "name": "Caffè Latte", "price": 4.25, "description": "Rich espresso with steamed milk.", "image_url": "https://images.unsplash.com/photo-1512568448817-bb9a9604d72b?w=300&h=300&fit=crop"},
+    {"id": "latte", "name": "Caffè Latte", "price": 4.25, "description": "Rich espresso with steamed milk.", "image_url": "https://images.unsplash.com/photo-1541167760496-162955ed8a9f?auto=format&fit=crop&w=300&h=300"},
     {"id": "macchiato", "name": "Caramel Macchiato", "price": 4.95, "description": "Espresso with vanilla-flavored syrup, milk and caramel drizzle.", "image_url": "https://images.unsplash.com/photo-1485808191679-5f86510681a2?q=80&w=300&h=300&auto=format&fit=crop"},
     {"id": "cold-brew", "name": "Vanilla Sweet Cream Cold Brew", "price": 4.45, "description": "Slow-steeped cold brew topped with house-made vanilla sweet cream.", "image_url": "https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=300&h=300&auto=format&fit=crop"},
     {"id": "frappuccino", "name": "Mocha Frappuccino", "price": 5.25, "description": "Coffee, mocha sauce and milk blended with ice and topped with whipped cream.", "image_url": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=300&h=300&auto=format&fit=crop"},
-    {"id": "spring-latte", "name": "Honey Lavender Latte", "price": 5.45, "description": "🌸 Spring Special: Creamy latte with hints of honey and floral lavender.", "image_url": "https://images.unsplash.com/photo-1596701062351-8c2c14d1fcd0?w=300&h=300&fit=crop"},
+    {"id": "spring-latte", "name": "Honey Lavender Latte", "price": 5.45, "description": "🌸 Spring Special: Creamy latte with hints of honey and floral lavender.", "image_url": "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&w=300&h=300"},
 ]
 
 USERS = {} # In-memory for demo
