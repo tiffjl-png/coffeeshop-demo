@@ -52,7 +52,28 @@ gcloud run services proxy earlybirds-frontend --port=4001 --region=us-central1
 ```
 Access the app at: **http://localhost:4001**
 
+## 💻 Local Development (Rapid Testing)
+To test new features locally without triggering a cloud build:
+
+1. **Start the Backend**:
+   ```bash
+   cd backend
+   source venv/bin/activate
+   python main.py
+   # Backend will run at http://localhost:8001
+   ```
+
+2. **Start the Frontend**:
+   ```bash
+   cd frontend
+   npm start
+   # Frontend will run at http://localhost:3000
+   ```
+
+3. **Verify**: Open [http://localhost:3000](http://localhost:3000). The frontend is pre-configured to talk to the local backend. Changes you make to the code will "Hot Reload" instantly.
+
 ## 🛠 CI/CD Pipeline
+Once your changes look good locally, push them to GitHub and run the pipeline:
 The project includes a `cloudbuild.yaml` file for automated deployments.
 
 To trigger manually:
