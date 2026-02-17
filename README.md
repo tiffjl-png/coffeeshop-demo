@@ -72,6 +72,19 @@ To test new features locally without triggering a cloud build:
 
 3. **Verify**: Open [http://localhost:3000](http://localhost:3000). The frontend is pre-configured to talk to the local backend. Changes you make to the code will "Hot Reload" instantly.
 
+## 🛑 Stopping & Restarting
+
+### To Stop All Local Services
+Run this command to clear all background proxies and servers:
+```bash
+ps -ef | grep -E "python3|npm|serve|gcloud run services proxy" | grep -v grep | awk '{print $2}' | xargs kill -9
+```
+
+### To Restart Next Time
+1. **Pull latest**: `git pull origin main`
+2. **Local Test**: Follow the "Local Development" section above.
+3. **Cloud Test**: Start the proxies in the "Private Access" section above and visit `http://localhost:4001`.
+
 ## 🛠 CI/CD Pipeline
 Once your changes look good locally, push them to GitHub and run the pipeline:
 The project includes a `cloudbuild.yaml` file for automated deployments.
@@ -86,7 +99,3 @@ gcloud builds submit --config cloudbuild.yaml \
 - **Database Name**: `coffeeshop-demo`
 - **Location**: `us-central1`
 - **Required IAM Roles**: The Cloud Run service account must have `roles/datastore.user`.
-
-## 💻 Local Development
-1. **Backend**: `cd backend && pip install -r requirements.txt && python main.py`
-2. **Frontend**: `cd frontend && npm install && npm start`
